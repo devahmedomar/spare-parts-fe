@@ -1,0 +1,55 @@
+<app-page-header title="لوحة التحكم" subtitle="نظرة عامة على المحل"></app-page-header>
+
+@if (loading()) {
+  <app-loading-spinner />
+} @else if (summary(); as s) {
+  <div class="stats-grid">
+    <a class="stat-card" routerLink="/spare-parts" style="text-decoration:none">
+      <div class="stat-icon blue">🔧</div>
+      <div class="stat-info">
+        <div class="stat-label">قطع الغيار</div>
+        <div class="stat-value">{{ s.spareParts }}</div>
+      </div>
+    </a>
+
+    <a class="stat-card" routerLink="/sales" style="text-decoration:none">
+      <div class="stat-icon green">🛒</div>
+      <div class="stat-info">
+        <div class="stat-label">المبيعات</div>
+        <div class="stat-value">{{ s.sales }}</div>
+      </div>
+    </a>
+
+    <a class="stat-card" routerLink="/returns" style="text-decoration:none">
+      <div class="stat-icon red">↩️</div>
+      <div class="stat-info">
+        <div class="stat-label">المرتجعات</div>
+        <div class="stat-value">{{ s.returns }}</div>
+      </div>
+    </a>
+
+    <a class="stat-card" routerLink="/certificates/motor" style="text-decoration:none">
+      <div class="stat-icon yellow">📄</div>
+      <div class="stat-info">
+        <div class="stat-label">شهادات الموتور</div>
+        <div class="stat-value">{{ s.motorCerts }}</div>
+      </div>
+    </a>
+
+    <a class="stat-card" routerLink="/certificates/power-of-attorney" style="text-decoration:none">
+      <div class="stat-icon blue">📋</div>
+      <div class="stat-info">
+        <div class="stat-label">توكيلات عامة</div>
+        <div class="stat-value">{{ s.powerOfAttorneys }}</div>
+      </div>
+    </a>
+
+    <a class="stat-card" routerLink="/certificates/contracts" style="text-decoration:none">
+      <div class="stat-icon green">📝</div>
+      <div class="stat-info">
+        <div class="stat-label">عقود مسجلة</div>
+        <div class="stat-value">{{ s.contracts }}</div>
+      </div>
+    </a>
+  </div>
+}

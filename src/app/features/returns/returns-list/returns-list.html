@@ -1,0 +1,42 @@
+<app-page-header
+  title="المرتجعات"
+  subtitle="سجل عمليات الإرجاع"
+  actionLabel="تسجيل مرتجع"
+  (action)="goToNew()"
+/>
+
+<div class="card">
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (returns().length === 0) {
+    <div class="empty-state">
+      <div class="empty-state-icon">↩️</div>
+      <p>لا توجد مرتجعات مسجلة بعد.</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>القطعة</th>
+            <th>الكمية المرتجعة</th>
+            <th>السبب</th>
+            <th>التاريخ</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ret of returns(); track ret._id; let i = $index) {
+            <tr>
+              <td class="text-muted">{{ i + 1 }}</td>
+              <td class="font-semibold">{{ ret.sparePartId?.name || '—' }}</td>
+              <td><span class="badge badge-warning">{{ ret.quantityReturned }}</span></td>
+              <td class="text-muted">{{ ret.reason || '—' }}</td>
+              <td class="text-muted text-sm">{{ ret.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

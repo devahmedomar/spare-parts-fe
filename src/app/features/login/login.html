@@ -1,0 +1,48 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-logo">
+      <div style="font-size:3rem;margin-bottom:8px">🚗</div>
+      <h1>نظام قطع الغيار</h1>
+      <p>تسجيل الدخول للمتابعة</p>
+    </div>
+
+    @if (error()) {
+      <div class="login-error">{{ error() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">اسم المستخدم <span class="required">*</span></label>
+        <input
+          class="form-control"
+          [class.is-invalid]="form.controls.username.invalid && form.controls.username.touched"
+          type="text"
+          formControlName="username"
+          placeholder="أدخل اسم المستخدم"
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">كلمة المرور <span class="required">*</span></label>
+        <input
+          class="form-control"
+          [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched"
+          type="password"
+          formControlName="password"
+          placeholder="أدخل كلمة المرور"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-full"
+        style="justify-content:center;margin-top:8px"
+        [disabled]="loading()"
+      >
+        @if (loading()) { جارٍ تسجيل الدخول... } @else { تسجيل الدخول }
+      </button>
+    </form>
+  </div>
+</div>

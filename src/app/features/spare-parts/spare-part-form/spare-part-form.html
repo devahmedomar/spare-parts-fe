@@ -1,0 +1,65 @@
+<app-page-header
+  [title]="isEdit() ? 'تعديل قطعة غيار' : 'إضافة قطعة غيار'"
+/>
+
+<div class="card" style="max-width:520px">
+  @if (loadingData()) {
+    <div class="spinner-overlay"><div class="spinner"></div></div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">اسم القطعة <span class="required">*</span></label>
+        <input
+          class="form-control"
+          [class.is-invalid]="form.controls.name.invalid && form.controls.name.touched"
+          type="text"
+          formControlName="name"
+          placeholder="مثال: فلتر زيت"
+        />
+        @if (form.controls.name.invalid && form.controls.name.touched) {
+          <p class="form-error">اسم القطعة مطلوب</p>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">الكمية <span class="required">*</span></label>
+          <input
+            class="form-control"
+            [class.is-invalid]="form.controls.quantity.invalid && form.controls.quantity.touched"
+            type="number"
+            formControlName="quantity"
+            min="0"
+            placeholder="0"
+          />
+          @if (form.controls.quantity.invalid && form.controls.quantity.touched) {
+            <p class="form-error">الكمية يجب أن تكون 0 أو أكثر</p>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">السعر (ج.م) <span class="required">*</span></label>
+          <input
+            class="form-control"
+            [class.is-invalid]="form.controls.price.invalid && form.controls.price.touched"
+            type="number"
+            formControlName="price"
+            min="0"
+            step="0.01"
+            placeholder="0.00"
+          />
+          @if (form.controls.price.invalid && form.controls.price.touched) {
+            <p class="form-error">السعر يجب أن يكون 0 أو أكثر</p>
+          }
+        </div>
+      </div>
+
+      <div class="flex gap-2" style="margin-top:8px">
+        <button type="submit" class="btn btn-primary" [disabled]="loading()">
+          @if (loading()) { جارٍ الحفظ... } @else { {{ isEdit() ? 'تحديث' : 'إضافة' }} }
+        </button>
+        <button type="button" class="btn btn-ghost" (click)="goBack()">إلغاء</button>
+      </div>
+    </form>
+  }
+</div>

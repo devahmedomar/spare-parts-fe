@@ -1,0 +1,62 @@
+<!-- <app-page-header
+  title="العقود المسجلة"
+  subtitle="إدارة العقود المسجلة"
+  actionLabel="إضافة عقد"
+  (action)="goToNew()"
+/>
+
+<div class="card">
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (contracts().length === 0) {
+    <div class="empty-state">
+      <div class="empty-state-icon">📝</div>
+      <p>لا توجد عقود مسجلة.</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>رقم العقد</th>
+            <th>اسم المالك</th>
+            <th>الصورة</th>
+            <th>التاريخ</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (contract of contracts(); track contract._id; let i = $index) {
+            <tr>
+              <td class="text-muted">{{ i + 1 }}</td>
+              <td class="font-semibold">{{ contract.contractNumber }}</td>
+              <td>{{ contract.ownerName }}</td>
+              <td>
+                @if (contract.image) {
+                  <img class="img-thumb" [src]="contract.image" alt="صورة العقد"
+                    (click)="window.open(contract.image, '_blank')" />
+                } @else { — }
+              </td>
+              <td class="text-muted text-sm">{{ contract.createdAt | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-outline btn-sm" (click)="goToEdit(contract._id)">✏️ تعديل</button>
+                  <button class="btn btn-danger btn-sm" (click)="confirmDelete(contract)">🗑️ حذف</button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (deleteTarget()) {
+  <app-confirm-dialog
+    [message]="'هل تريد حذف العقد رقم: ' + deleteTarget()!.contractNumber + '؟'"
+    (confirmed)="doDelete()"
+    (cancelled)="cancelDelete()"
+  />
+} -->

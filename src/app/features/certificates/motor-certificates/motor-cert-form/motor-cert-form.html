@@ -1,0 +1,59 @@
+<app-page-header
+  [title]="isEdit() ? 'تعديل شهادة موتور' : 'إضافة شهادة موتور'"
+/>
+
+<div class="card" style="max-width:580px">
+  @if (loadingData()) {
+    <div class="spinner-overlay"><div class="spinner"></div></div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">رقم الموتور <span class="required">*</span></label>
+          <input class="form-control"
+            [class.is-invalid]="form.controls.motorNumber.invalid && form.controls.motorNumber.touched"
+            type="text" formControlName="motorNumber" placeholder="رقم الموتور" />
+          @if (form.controls.motorNumber.invalid && form.controls.motorNumber.touched) {
+            <p class="form-error">رقم الموتور مطلوب</p>
+          }
+        </div>
+        <div class="form-group">
+          <label class="form-label">اسم المالك <span class="required">*</span></label>
+          <input class="form-control"
+            [class.is-invalid]="form.controls.ownerName.invalid && form.controls.ownerName.touched"
+            type="text" formControlName="ownerName" placeholder="الاسم بالكامل" />
+          @if (form.controls.ownerName.invalid && form.controls.ownerName.touched) {
+            <p class="form-error">اسم المالك مطلوب</p>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">العنوان <span class="required">*</span></label>
+        <input class="form-control"
+          [class.is-invalid]="form.controls.address.invalid && form.controls.address.touched"
+          type="text" formControlName="address" placeholder="العنوان" />
+        @if (form.controls.address.invalid && form.controls.address.touched) {
+          <p class="form-error">العنوان مطلوب</p>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          صورة الشهادة @if (!isEdit()) { <span class="required">*</span> }
+        </label>
+        <app-file-upload
+          [existingImageUrl]="existingImage()"
+          (fileSelected)="onFileSelected($event)"
+        />
+      </div>
+
+      <div class="flex gap-2" style="margin-top:8px">
+        <button type="submit" class="btn btn-primary" [disabled]="loading()">
+          @if (loading()) { جارٍ الحفظ... } @else { {{ isEdit() ? 'تحديث' : 'إضافة' }} }
+        </button>
+        <button type="button" class="btn btn-ghost" (click)="goBack()">إلغاء</button>
+      </div>
+    </form>
+  }
+</div>

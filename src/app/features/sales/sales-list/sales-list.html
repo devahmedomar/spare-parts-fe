@@ -1,0 +1,58 @@
+<app-page-header
+  title="المبيعات"
+  subtitle="سجل عمليات البيع"
+  actionLabel="تسجيل بيع"
+  (action)="goToNew()"
+/>
+
+<div class="card">
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (sales().length === 0) {
+    <div class="empty-state">
+      <div class="empty-state-icon">🛒</div>
+      <p>لا توجد مبيعات مسجلة بعد.</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>القطعة</th>
+            <th>الكمية المباعة</th>
+            <th>سعر الوحدة</th>
+            <th>الإجمالي</th>
+            <th>التاريخ</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (sale of sales(); track sale._id; let i = $index) {
+            <tr>
+              <td class="text-muted">{{ i + 1 }}</td>
+              <td class="font-semibold">{{ sale.sparePartId?.name || '—' }}</td>
+              <td><span class="badge badge-primary">{{ sale.quantitySold }}</span></td>
+              <td>{{ sale.unitPrice | number:'1.2-2' }} ج.م</td>
+              <td class="font-semibold">{{ sale.totalPrice | number:'1.2-2' }} ج.م</td>
+              <td class="text-muted text-sm">{{ sale.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <button class="btn btn-danger btn-sm" (click)="confirmDelete(sale)">
+                  🗑️ حذف
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
+
+@if (deleteTarget()) {
+  <app-confirm-dialog
+    message="هل تريد حذف عملية البيع هذه؟ سيتم استعادة الكمية إلى المخزون."
+    (confirmed)="doDelete()"
+    (cancelled)="cancelDelete()"
+  />
+}

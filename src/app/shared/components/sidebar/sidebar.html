@@ -1,0 +1,40 @@
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span class="sidebar-logo-icon">🚗</span>
+    <span class="sidebar-logo-text">قطع الغيار</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    @for (item of navItems; track item.route) {
+      <a
+        class="sidebar-link"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.route === '/dashboard'}"
+      >
+        <span class="sidebar-icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+
+    <div class="sidebar-section-title">الوثائق والشهادات</div>
+
+    @for (item of certItems; track item.route) {
+      <a
+        class="sidebar-link"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+      >
+        <span class="sidebar-icon">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="sidebar-logout" (click)="logout()">
+      <span>🚪</span>
+      <span>تسجيل الخروج</span>
+    </button>
+  </div>
+</aside>
