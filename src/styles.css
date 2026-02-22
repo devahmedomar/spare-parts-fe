@@ -67,6 +67,14 @@ html, body {
   overflow: hidden;
 }
 
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .main-content {
   flex: 1;
   overflow-y: auto;
@@ -77,6 +85,16 @@ html, body {
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+/* Mobile top bar — hidden on desktop */
+.mobile-topbar {
+  display: none;
+}
+
+/* Sidebar overlay backdrop — hidden on desktop */
+.sidebar-overlay {
+  display: none;
 }
 
 /* ============================================================
@@ -300,6 +318,7 @@ tbody tr:hover {
 .badge-success { background: var(--color-success-light); color: var(--color-success); }
 .badge-danger  { background: var(--color-danger-light);  color: var(--color-danger);  }
 .badge-warning { background: var(--color-warning-light); color: var(--color-warning); }
+.badge-info    { background: #dbeafe; color: #1d4ed8; }
 
 /* ============================================================
    Page Header
@@ -414,6 +433,149 @@ tbody tr:hover {
 
 .empty-state p {
   font-size: 0.9rem;
+}
+
+/* ============================================================
+   Autocomplete Part Search
+   ============================================================ */
+.autocomplete-wrapper {
+  position: relative;
+}
+
+.autocomplete-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.autocomplete-icon {
+  position: absolute;
+  inset-inline-start: 10px;
+  font-size: 0.9rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.autocomplete-input {
+  padding-inline-start: 34px !important;
+}
+
+.autocomplete-spinner {
+  position: absolute;
+  inset-inline-end: 10px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  inset-block-start: calc(100% + 4px);
+  inset-inline: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-block-end: 1px solid var(--color-border);
+  transition: background 0.15s;
+}
+
+.autocomplete-item:last-child { border-block-end: none; }
+
+.autocomplete-item:hover {
+  background: var(--color-primary-light);
+}
+
+.autocomplete-item-name {
+  font-weight: 500;
+  flex: 1;
+}
+
+.autocomplete-item-meta {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Selected part chip */
+.selected-part-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+}
+
+.selected-part-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.selected-part-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.selected-part-meta {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.btn-clear-part {
+  background: none;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-clear-part:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* Total preview */
+.total-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--color-success-light);
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius);
+  margin-block-end: 16px;
+}
+
+.total-amount {
+  font-size: 1.1rem;
+  color: var(--color-success);
 }
 
 /* ============================================================
@@ -645,4 +807,144 @@ tbody tr:hover {
   padding: 10px 14px;
   font-size: 0.875rem;
   margin-bottom: 16px;
+}
+
+/* ============================================================
+   Responsive — Mobile (≤ 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* Dim overlay when sidebar is open */
+  .app-layout.sidebar-open .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 250;
+  }
+
+  /* Mobile top bar */
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--sidebar-bg);
+    color: #fff;
+    flex-shrink: 0;
+    z-index: 200;
+  }
+
+  .mobile-topbar-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Hamburger button */
+  .hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+
+  .hamburger-btn span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  /* Main content padding reduced */
+  .main-content {
+    padding: 16px 12px;
+  }
+
+  /* Cards full-width on mobile */
+  .card[style*="max-width"] {
+    max-width: 100% !important;
+  }
+
+  /* Stats grid: 2 columns on mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  /* Tables: horizontal scroll */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 560px;
+  }
+
+  /* Page header: stack on small screens */
+  .page-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Reduce card padding */
+  .card {
+    padding: 16px;
+  }
+
+  /* Action buttons: wrap */
+  .actions-cell {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Form controls full width */
+  .form-control {
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+
+  /* Login card padding */
+  .login-card {
+    padding: 24px 20px;
+    margin: 16px;
+  }
+}
+
+/* Responsive — Tablet (769px–1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .main-content {
+    padding: 20px 16px;
+  }
 }

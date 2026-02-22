@@ -1,6 +1,7 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { ReturnsService } from '../returns.service';
 import { SparePartsService } from '../../spare-parts/spare-parts.service';
 import { SparePart } from '../../spare-parts/spare-part.model';
@@ -13,6 +14,8 @@ import { NotificationService } from '../../../core/services/notification.service
   templateUrl: './return-form.html',
 })
 export class ReturnFormComponent implements OnInit {
+  @Input() id?: string;
+
   private returnsService = inject(ReturnsService);
   private sparePartsService = inject(SparePartsService);
   private router = inject(Router);
@@ -21,6 +24,7 @@ export class ReturnFormComponent implements OnInit {
   parts = signal<SparePart[]>([]);
   loading = signal(false);
   loadingParts = signal(true);
+  isEdit = signal(false);
 
   form = new FormGroup({
     sparePartId: new FormControl('', [Validators.required]),
@@ -30,7 +34,23 @@ export class ReturnFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.sparePartsService.getAll().subscribe({
-      next: parts => { this.parts.set(parts); this.loadingParts.set(false); },
+      next: parts => {
+        this.parts.set(parts);
+        this.loadingParts.set(false);
+        if (this.id) {
+          this.isEdit.set(true);
+          this.returnsService.getById(this.id).subscribe({
+            next: ret => {
+              this.form.setValue({
+                sparePartId: ret.sparePartId._id,
+                quantityReturned: ret.quantityReturned,
+                reason: ret.reason || '',
+              });
+            },
+            error: () => this.router.navigate(['/returns']),
+          });
+        }
+      },
       error: () => this.loadingParts.set(false),
     });
   }
@@ -40,13 +60,24 @@ export class ReturnFormComponent implements OnInit {
     this.loading.set(true);
 
     const val = this.form.value;
-    this.returnsService.create({
+    const data = {
       sparePartId: val.sparePartId!,
       quantityReturned: val.quantityReturned!,
       reason: val.reason || undefined,
-    }).subscribe({
+    };
+
+    const req = this.isEdit()
+      ? this.returnsService.update(this.id!, data)
+      : this.returnsService.create(data);
+
+    req.pipe(
+      switchMap(() => this.sparePartsService.getAll()),
+    ).subscribe({
       next: () => {
-        this.notification.show('تم تسجيل المرتجع بنجاح', 'success');
+        this.notification.show(
+          this.isEdit() ? 'تم تحديث المرتجع بنجاح' : 'تم تسجيل المرتجع بنجاح',
+          'success',
+        );
         this.router.navigate(['/returns']);
       },
       error: () => this.loading.set(false),

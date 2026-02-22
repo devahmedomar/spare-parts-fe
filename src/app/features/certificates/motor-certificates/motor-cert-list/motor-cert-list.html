@@ -35,9 +35,13 @@
               <td>{{ cert.ownerName }}</td>
               <td class="text-muted">{{ cert.address }}</td>
               <td>
-                @if (cert.image) {
-                  <img class="img-thumb" [src]="cert.image" alt="صورة الشهادة"
-                    (click)="openImage(cert.image)" />
+                @if (getImageUrl(cert)) {
+                  <div class="actions-cell">
+                    <img class="img-thumb" [src]="getImageUrl(cert)" alt="صورة الشهادة"
+                      (click)="openImage(getImageUrl(cert))" style="cursor:pointer" />
+                    <button class="btn btn-ghost btn-sm btn-icon" title="تنزيل"
+                      (click)="downloadImage(getImageUrl(cert), cert.motorNumber)">⬇️</button>
+                  </div>
                 } @else { — }
               </td>
               <td class="text-muted text-sm">{{ cert.createdAt | date:'dd/MM/yyyy' }}</td>

@@ -13,7 +13,19 @@ export class ReturnsService {
     return this.http.get<Return[]>(this.api);
   }
 
+  getById(id: string): Observable<Return> {
+    return this.http.get<Return>(`${this.api}/${id}`);
+  }
+
   create(data: { sparePartId: string; quantityReturned: number; reason?: string }): Observable<Return> {
     return this.http.post<Return>(this.api, data);
+  }
+
+  update(id: string, data: { sparePartId: string; quantityReturned: number; reason?: string }): Observable<Return> {
+    return this.http.put<Return>(`${this.api}/${id}`, data);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.api}/${id}`);
   }
 }

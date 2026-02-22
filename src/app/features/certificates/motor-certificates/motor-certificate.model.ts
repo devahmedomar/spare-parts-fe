@@ -3,6 +3,7 @@ export interface MotorCertificate {
   motorNumber: string;
   ownerName: string;
   address: string;
-  image: string;
+  image?: string;
+  imageUrl?: string;
   createdAt: string;
 }

@@ -1,4 +1,4 @@
-<app-page-header title="تسجيل مرتجع" />
+<app-page-header [title]="isEdit() ? 'تعديل مرتجع' : 'تسجيل مرتجع'" />
 
 <div class="card" style="max-width:520px">
   @if (loadingParts()) {
@@ -49,7 +49,7 @@
 
       <div class="flex gap-2">
         <button type="submit" class="btn btn-primary" [disabled]="loading()">
-          @if (loading()) { جارٍ الحفظ... } @else { تسجيل المرتجع }
+          @if (loading()) { جارٍ الحفظ... } @else { {{ isEdit() ? 'حفظ التعديلات' : 'تسجيل المرتجع' }} }
         </button>
         <button type="button" class="btn btn-ghost" (click)="goBack()">إلغاء</button>
       </div>

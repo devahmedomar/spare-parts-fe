@@ -41,7 +41,8 @@ export class MotorCertFormComponent implements OnInit {
             ownerName: cert.ownerName,
             address: cert.address,
           });
-          this.existingImage.set(cert.image || '');
+          const imgUrl = cert.image || cert.imageUrl || '';
+          this.existingImage.set(imgUrl.startsWith('/') ? 'http://localhost:5000' + imgUrl : imgUrl);
           this.loadingData.set(false);
         },
         error: () => this.router.navigate(['/certificates/motor']),

@@ -36,7 +36,8 @@ export class PoaFormComponent implements OnInit {
       this.service.getById(this.id).subscribe({
         next: item => {
           this.form.setValue({ ownerName: item.ownerName, nationalId: item.nationalId || '' });
-          this.existingImage.set(item.image || '');
+          const imgUrl = item.image || item.imageUrl || '';
+          this.existingImage.set(imgUrl.startsWith('/') ? 'http://localhost:5000' + imgUrl : imgUrl);
           this.loadingData.set(false);
         },
         error: () => this.router.navigate(['/certificates/power-of-attorney']),

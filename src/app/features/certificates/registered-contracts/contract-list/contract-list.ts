@@ -46,5 +46,18 @@ export class ContractListComponent implements OnInit {
     });
   }
 
+  getImageUrl(contract: RegisteredContract): string {
+    const url = contract.image || contract.imageUrl || '';
+    return url.startsWith('/') ? 'http://localhost:5000' + url : url;
+  }
+
   openImage(url: string): void { window.open(url, '_blank'); }
+
+  downloadImage(url: string, name: string): void {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.target = '_blank';
+    a.click();
+  }
 }

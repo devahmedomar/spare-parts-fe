@@ -31,7 +31,7 @@
           @for (sale of sales(); track sale._id; let i = $index) {
             <tr>
               <td class="text-muted">{{ i + 1 }}</td>
-              <td class="font-semibold">{{ sale.sparePartId?.name || '—' }}</td>
+              <td class="font-semibold">{{ sale.sparePartId.name || '—' }}</td>
               <td><span class="badge badge-primary">{{ sale.quantitySold }}</span></td>
               <td>{{ sale.unitPrice | number:'1.2-2' }} ج.م</td>
               <td class="font-semibold">{{ sale.totalPrice | number:'1.2-2' }} ج.م</td>

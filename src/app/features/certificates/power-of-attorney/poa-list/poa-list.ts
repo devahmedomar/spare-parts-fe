@@ -46,5 +46,18 @@ export class PoaListComponent implements OnInit {
     });
   }
 
+  getImageUrl(item: PowerOfAttorney): string {
+    const url = item.image || item.imageUrl || '';
+    return url.startsWith('/') ? 'http://localhost:5000' + url : url;
+  }
+
   openImage(url: string): void { window.open(url, '_blank'); }
+
+  downloadImage(url: string, name: string): void {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.target = '_blank';
+    a.click();
+  }
 }

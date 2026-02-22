@@ -1,4 +1,4 @@
-<!-- <app-page-header
+<app-page-header
   title="التوكيلات العامة"
   subtitle="إدارة التوكيلات العامة"
   actionLabel="إضافة توكيل"
@@ -33,9 +33,13 @@
               <td class="font-semibold">{{ item.ownerName }}</td>
               <td class="text-muted">{{ item.nationalId || '—' }}</td>
               <td>
-                @if (item.image) {
-                  <img class="img-thumb" [src]="item.image" alt="صورة التوكيل"
-                    (click)="window.open(item.image, '_blank')" />
+                @if (getImageUrl(item)) {
+                  <div class="actions-cell">
+                    <img class="img-thumb" [src]="getImageUrl(item)" alt="صورة التوكيل"
+                      (click)="openImage(getImageUrl(item))" style="cursor:pointer" />
+                    <button class="btn btn-ghost btn-sm btn-icon" title="تنزيل"
+                      (click)="downloadImage(getImageUrl(item), item.ownerName)">⬇️</button>
+                  </div>
                 } @else { — }
               </td>
               <td class="text-muted text-sm">{{ item.createdAt | date:'dd/MM/yyyy' }}</td>
@@ -59,4 +63,4 @@
     (confirmed)="doDelete()"
     (cancelled)="cancelDelete()"
   />
-} -->
+}

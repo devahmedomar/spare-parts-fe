@@ -36,7 +36,8 @@ export class ContractFormComponent implements OnInit {
       this.service.getById(this.id).subscribe({
         next: contract => {
           this.form.setValue({ contractNumber: contract.contractNumber, ownerName: contract.ownerName });
-          this.existingImage.set(contract.image || '');
+          const imgUrl = contract.image || contract.imageUrl || '';
+          this.existingImage.set(imgUrl.startsWith('/') ? 'http://localhost:5000' + imgUrl : imgUrl);
           this.loadingData.set(false);
         },
         error: () => this.router.navigate(['/certificates/contracts']),

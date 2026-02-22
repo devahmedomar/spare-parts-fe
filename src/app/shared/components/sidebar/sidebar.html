@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<aside class="sidebar" [class.open]="open()">
   <div class="sidebar-logo">
     <span class="sidebar-logo-icon">🚗</span>
     <span class="sidebar-logo-text">قطع الغيار</span>
@@ -11,6 +11,7 @@
         [routerLink]="item.route"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: item.route === '/dashboard'}"
+        (click)="onNavClick()"
       >
         <span class="sidebar-icon">{{ item.icon }}</span>
         <span>{{ item.label }}</span>
@@ -24,6 +25,7 @@
         class="sidebar-link"
         [routerLink]="item.route"
         routerLinkActive="active"
+        (click)="onNavClick()"
       >
         <span class="sidebar-icon">{{ item.icon }}</span>
         <span>{{ item.label }}</span>

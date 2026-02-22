@@ -1,4 +1,4 @@
-<!-- <app-page-header
+<app-page-header
   title="العقود المسجلة"
   subtitle="إدارة العقود المسجلة"
   actionLabel="إضافة عقد"
@@ -33,9 +33,13 @@
               <td class="font-semibold">{{ contract.contractNumber }}</td>
               <td>{{ contract.ownerName }}</td>
               <td>
-                @if (contract.image) {
-                  <img class="img-thumb" [src]="contract.image" alt="صورة العقد"
-                    (click)="window.open(contract.image, '_blank')" />
+                @if (getImageUrl(contract)) {
+                  <div class="actions-cell">
+                    <img class="img-thumb" [src]="getImageUrl(contract)" alt="صورة العقد"
+                      (click)="openImage(getImageUrl(contract))" style="cursor:pointer" />
+                    <button class="btn btn-ghost btn-sm btn-icon" title="تنزيل"
+                      (click)="downloadImage(getImageUrl(contract), contract.contractNumber)">⬇️</button>
+                  </div>
                 } @else { — }
               </td>
               <td class="text-muted text-sm">{{ contract.createdAt | date:'dd/MM/yyyy' }}</td>
@@ -59,4 +63,4 @@
     (confirmed)="doDelete()"
     (cancelled)="cancelDelete()"
   />
-} -->
+}

@@ -28,44 +28,50 @@ export const CERTIFICATES_ROUTES: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'power-of-attorney',
-  //   children: [
-  //     {
-  //       path: '',
-  //       loadComponent: () =>
-  //         import('./power-of-attorney/poa-list/poa-list').then((m) => m.PoaListComponent),
-  //     },
-  //     {
-  //       path: 'new',
-  //       loadComponent: () =>
-  //         import('./power-of-attorney/poa-form/poa-form').then((m) => m.PoaFormComponent),
-  //     },
-  //     {
-  //       path: ':id/edit',
-  //       loadComponent: () =>
-  //         import('./power-of-attorney/poa-form/poa-form').then((m) => m.PoaFormComponent),
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: 'contracts',
-  //   children: [
-  //     {
-  //       path: '',
-  //       loadComponent: () =>
-  //         import('./registered-contracts/contract-list/contract-list').then(m => m.ContractListComponent),
-  //     },
-  //     {
-  //       path: 'new',
-  //       loadComponent: () =>
-  //         import('./registered-contracts/contract-form/contract-form').then(m => m.ContractFormComponent),
-  //     },
-  //     {
-  //       path: ':id/edit',
-  //       loadComponent: () =>
-  //         import('./registered-contracts/contract-form/contract-form').then(m => m.ContractFormComponent),
-  //     },
-  //   ],
-  // },
+  {
+    path: 'power-of-attorney',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./power-of-attorney/poa-list/poa-list').then((m) => m.PoaListComponent),
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./power-of-attorney/poa-form/poa-form').then((m) => m.PoaFormComponent),
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () =>
+          import('./power-of-attorney/poa-form/poa-form').then((m) => m.PoaFormComponent),
+      },
+    ],
+  },
+  {
+    path: 'contracts',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./registered-contracts/contract-list/contract-list').then(
+            (m) => m.ContractListComponent,
+          ),
+      },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./registered-contracts/contract-form/contract-form').then(
+            (m) => m.ContractFormComponent,
+          ),
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () =>
+          import('./registered-contracts/contract-form/contract-form').then(
+            (m) => m.ContractFormComponent,
+          ),
+      },
+    ],
+  },
 ];

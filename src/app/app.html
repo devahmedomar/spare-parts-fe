@@ -1,11 +1,25 @@
 @if (auth.isLoggedIn()) {
-  <div class="app-layout">
-    <app-sidebar />
-    <main class="main-content">
-      <div class="page-container">
-        <router-outlet />
-      </div>
-    </main>
+  <div class="app-layout" [class.sidebar-open]="sidebarOpen()">
+
+    <app-sidebar [open]="sidebarOpen()" (closeRequest)="closeSidebar()" />
+
+    <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+
+    <div class="content-wrapper">
+      <header class="mobile-topbar">
+        <button class="hamburger-btn" (click)="toggleSidebar()" aria-label="القائمة">
+          <span></span><span></span><span></span>
+        </button>
+        <span class="mobile-topbar-title">🚗 قطع الغيار</span>
+      </header>
+
+      <main class="main-content">
+        <div class="page-container">
+          <router-outlet />
+        </div>
+      </main>
+    </div>
+
   </div>
 } @else {
   <router-outlet />

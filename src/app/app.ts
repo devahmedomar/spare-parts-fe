@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { SidebarComponent } from './shared/components/sidebar/sidebar';
@@ -12,4 +12,8 @@ import { NotificationComponent } from './shared/components/notification/notifica
 })
 export class App {
   auth = inject(AuthService);
+  sidebarOpen = signal(false);
+
+  toggleSidebar(): void { this.sidebarOpen.update(v => !v); }
+  closeSidebar(): void  { this.sidebarOpen.set(false); }
 }

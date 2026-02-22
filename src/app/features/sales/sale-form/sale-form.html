@@ -1,68 +1,94 @@
 <app-page-header title="تسجيل عملية بيع" />
 
-<div class="card" style="max-width:520px">
-  @if (loadingParts()) {
-    <div class="spinner-overlay"><div class="spinner"></div></div>
-  } @else {
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label class="form-label">القطعة <span class="required">*</span></label>
-        <select
-          class="form-control"
-          [class.is-invalid]="form.controls.sparePartId.invalid && form.controls.sparePartId.touched"
-          formControlName="sparePartId"
-        >
-          <option value="">-- اختر قطعة غيار --</option>
-          @for (part of parts(); track part._id) {
-            <option [value]="part._id">
-              {{ part.name }} (متاح: {{ part.quantity }} - {{ part.price | number:'1.2-2' }} ج.م)
-            </option>
+<div class="card" style="max-width:560px">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Part Search -->
+    <div class="form-group">
+      <label class="form-label">القطعة <span class="required">*</span></label>
+
+      @if (selectedPart()) {
+        <!-- Selected part chip -->
+        <div class="selected-part-chip">
+          <div class="selected-part-info">
+            <span class="selected-part-name">{{ selectedPart()!.name }}</span>
+            <span class="selected-part-meta">
+              متاح: {{ selectedPart()!.quantity }} &nbsp;|&nbsp; {{ selectedPart()!.price | number:'1.2-2' }} ج.م
+            </span>
+          </div>
+          <button type="button" class="btn-clear-part" (click)="clearPart()" title="تغيير القطعة">✕</button>
+        </div>
+      } @else {
+        <!-- Search input with dropdown -->
+        <div class="autocomplete-wrapper">
+          <div class="autocomplete-input-wrap">
+            <span class="autocomplete-icon">🔍</span>
+            <input
+              #searchInput
+              class="form-control autocomplete-input"
+              [class.is-invalid]="form.controls.sparePartId.invalid && form.controls.sparePartId.touched"
+              [formControl]="searchControl"
+              (focus)="onSearchFocus()"
+              (blur)="onSearchBlur()"
+              type="text"
+              placeholder="اضغط للتصفح أو اكتب للبحث..."
+              autocomplete="off"
+            />
+            @if (searching()) {
+              <span class="autocomplete-spinner"></span>
+            }
+          </div>
+
+          @if (showDropdown()) {
+            <div class="autocomplete-dropdown">
+              @for (part of searchResults(); track part._id) {
+                <div class="autocomplete-item" (mousedown)="selectPart(part)">
+                  <span class="autocomplete-item-name">{{ part.name }}</span>
+                  <div class="autocomplete-item-meta">
+                    <span class="badge badge-info">متاح: {{ part.quantity }}</span>
+                    <span class="badge badge-success">{{ part.price | number:'1.2-2' }} ج.م</span>
+                  </div>
+                </div>
+              }
+            </div>
           }
-        </select>
+        </div>
         @if (form.controls.sparePartId.invalid && form.controls.sparePartId.touched) {
           <p class="form-error">يجب اختيار قطعة</p>
         }
-      </div>
-
-      @if (selectedPart) {
-        <div class="card" style="background:var(--color-primary-light);border:1px solid #bfdbfe;padding:12px;margin-bottom:16px">
-          <div class="flex gap-3">
-            <div><span class="text-muted text-sm">السعر:</span> <strong>{{ selectedPart.price | number:'1.2-2' }} ج.م</strong></div>
-            <div><span class="text-muted text-sm">المتاح:</span> <strong>{{ selectedPart.quantity }}</strong></div>
-          </div>
-        </div>
       }
+    </div>
 
-      <div class="form-group">
-        <label class="form-label">الكمية المباعة <span class="required">*</span></label>
-        <input
-          class="form-control"
-          [class.is-invalid]="form.controls.quantitySold.invalid && form.controls.quantitySold.touched"
-          type="number"
-          formControlName="quantitySold"
-          min="1"
-          placeholder="1"
-        />
-        @if (form.controls.quantitySold.invalid && form.controls.quantitySold.touched) {
-          <p class="form-error">الكمية يجب أن تكون 1 على الأقل</p>
-        }
-      </div>
-
-      @if (selectedPart && form.value.quantitySold && form.value.quantitySold > 0) {
-        <div style="padding:12px;background:var(--color-success-light);border-radius:var(--radius);margin-bottom:16px;border:1px solid #bbf7d0">
-          <span class="text-muted text-sm">الإجمالي المتوقع: </span>
-          <strong style="color:var(--color-success)">
-            {{ (selectedPart.price * form.value.quantitySold) | number:'1.2-2' }} ج.م
-          </strong>
-        </div>
+    <!-- Quantity -->
+    <div class="form-group">
+      <label class="form-label">الكمية المباعة <span class="required">*</span></label>
+      <input
+        class="form-control"
+        [class.is-invalid]="form.controls.quantitySold.invalid && form.controls.quantitySold.touched"
+        type="number"
+        formControlName="quantitySold"
+        min="1"
+        placeholder="1"
+      />
+      @if (form.controls.quantitySold.invalid && form.controls.quantitySold.touched) {
+        <p class="form-error">الكمية يجب أن تكون 1 على الأقل</p>
       }
+    </div>
 
-      <div class="flex gap-2">
-        <button type="submit" class="btn btn-primary" [disabled]="loading()">
-          @if (loading()) { جارٍ الحفظ... } @else { تسجيل البيع }
-        </button>
-        <button type="button" class="btn btn-ghost" (click)="goBack()">إلغاء</button>
+    <!-- Total preview -->
+    @if (expectedTotal > 0) {
+      <div class="total-preview">
+        <span class="text-muted text-sm">الإجمالي المتوقع</span>
+        <strong class="total-amount">{{ expectedTotal | number:'1.2-2' }} ج.م</strong>
       </div>
-    </form>
-  }
+    }
+
+    <div class="flex gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="loading() || !selectedPart()">
+        @if (loading()) { جارٍ الحفظ... } @else { تسجيل البيع }
+      </button>
+      <button type="button" class="btn btn-ghost" (click)="goBack()">إلغاء</button>
+    </div>
+
+  </form>
 </div>

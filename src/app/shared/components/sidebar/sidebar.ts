@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -9,6 +9,9 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './sidebar.css',
 })
 export class SidebarComponent {
+  open = input(false);
+  closeRequest = output<void>();
+
   auth = inject(AuthService);
 
   navItems = [
@@ -24,7 +27,7 @@ export class SidebarComponent {
     { label: 'عقود مسجلة',      icon: '📝', route: '/certificates/contracts' },
   ];
 
-  logout(): void {
-    this.auth.logout();
-  }
+  onNavClick(): void { this.closeRequest.emit(); }
+
+  logout(): void { this.auth.logout(); }
 }

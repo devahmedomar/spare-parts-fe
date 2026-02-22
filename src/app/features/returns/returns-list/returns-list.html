@@ -23,16 +23,23 @@
             <th>الكمية المرتجعة</th>
             <th>السبب</th>
             <th>التاريخ</th>
+            <th>الإجراءات</th>
           </tr>
         </thead>
         <tbody>
           @for (ret of returns(); track ret._id; let i = $index) {
             <tr>
               <td class="text-muted">{{ i + 1 }}</td>
-              <td class="font-semibold">{{ ret.sparePartId?.name || '—' }}</td>
+              <td class="font-semibold">{{ ret.sparePartId.name || '—' }}</td>
               <td><span class="badge badge-warning">{{ ret.quantityReturned }}</span></td>
               <td class="text-muted">{{ ret.reason || '—' }}</td>
               <td class="text-muted text-sm">{{ ret.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-outline btn-sm" (click)="goToEdit(ret._id)">✏️ تعديل</button>
+                  <button class="btn btn-danger btn-sm" (click)="confirmDelete(ret)">🗑️ حذف</button>
+                </div>
+              </td>
             </tr>
           }
         </tbody>
@@ -40,3 +47,11 @@
     </div>
   }
 </div>
+
+@if (deleteTarget()) {
+  <app-confirm-dialog
+    [message]="'هل تريد حذف هذا المرتجع؟'"
+    (confirmed)="doDelete()"
+    (cancelled)="cancelDelete()"
+  />
+}

@@ -11,4 +11,9 @@ export const RETURNS_ROUTES: Routes = [
     loadComponent: () =>
       import('./return-form/return-form').then(m => m.ReturnFormComponent),
   },
+  {
+    path: ':id/edit',
+    loadComponent: () =>
+      import('./return-form/return-form').then(m => m.ReturnFormComponent),
+  },
 ];
