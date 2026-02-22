@@ -1,0 +1,44 @@
+<app-page-header
+  title="النواقص"
+  subtitle="قطع الغيار المنتهية من المخزون"
+/>
+
+<div class="card">
+  @if (loading()) {
+    <app-loading-spinner />
+  } @else if (parts().length === 0) {
+    <div class="empty-state">
+      <div class="empty-state-icon">✅</div>
+      <p>لا توجد قطع منتهية من المخزون حالياً.</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>اسم القطعة</th>
+            <th>الكمية</th>
+            <th>السعر</th>
+            <th>الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (part of parts(); track part._id; let i = $index) {
+            <tr>
+              <td class="text-muted">{{ i + 1 }}</td>
+              <td class="font-semibold">{{ part.name }}</td>
+              <td><span class="badge badge-danger">{{ part.quantity }}</span></td>
+              <td>{{ part.price | number:'1.2-2' }} ج.م</td>
+              <td>
+                <button class="btn btn-outline btn-sm" (click)="goToEdit(part._id)">
+                  ✏️ تعديل الكمية
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

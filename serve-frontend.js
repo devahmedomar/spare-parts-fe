@@ -28,9 +28,25 @@ const MIME = {
 };
 
 http.createServer((req, res) => {
-  const url      = req.url.split('?')[0];                          // strip query string
-  let   filePath = path.join(DIST, url === '/' ? 'index.html' : url);
-  const ext      = path.extname(filePath).toLowerCase();
+  const url = req.url.split('?')[0]; // strip query string
+
+  // Proxy /uploads/* directly to the backend — no npm package needed
+  if (url.startsWith('/uploads/')) {
+    const proxyReq = http.request(
+      { hostname: '127.0.0.1', port: 5000, path: req.url, method: req.method },
+      (proxyRes) => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res);
+      }
+    );
+    proxyReq.on('error', () => { res.writeHead(502); res.end('Backend unavailable'); });
+    req.pipe(proxyReq);
+    return;
+  }
+
+  // Serve static Angular build files
+  let filePath = path.join(DIST, url === '/' ? 'index.html' : url);
+  const ext    = path.extname(filePath).toLowerCase();
 
   fs.access(filePath, fs.constants.F_OK, (accessErr) => {
     // Unknown path or no extension → Angular SPA fallback

@@ -13,6 +13,11 @@ export class SparePartsService {
     const params: Record<string, string> = search ? { search } : {};
     return this.http.get<SparePart[]>(this.api, { params, responseType: 'json' });
   }
+
+  getShortages(): Observable<SparePart[]> {
+    return this.http.get<SparePart[]>(`${this.api}/shortages`);
+  }
+
   getById(id: string): Observable<SparePart> {
     return this.http.get<SparePart>(`${this.api}/${id}`);
   }

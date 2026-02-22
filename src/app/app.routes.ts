@@ -29,6 +29,11 @@ export const routes: Routes = [
           import('./features/sales/sales.routes').then(m => m.SALES_ROUTES),
       },
       {
+        path: 'shortages',
+        loadComponent: () =>
+          import('./features/spare-parts/shortages/shortages').then(m => m.ShortagesComponent),
+      },
+      {
         path: 'returns',
         loadChildren: () =>
           import('./features/returns/returns.routes').then(m => m.RETURNS_ROUTES),

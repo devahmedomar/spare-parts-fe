@@ -17,6 +17,7 @@ export class SidebarComponent {
   navItems = [
     { label: 'لوحة التحكم',  icon: '🏠', route: '/dashboard' },
     { label: 'قطع الغيار',   icon: '🔧', route: '/spare-parts' },
+    { label: 'النواقص',      icon: '⚠️', route: '/shortages' },
     { label: 'المبيعات',     icon: '🛒', route: '/sales' },
     { label: 'المرتجعات',    icon: '↩️', route: '/returns' },
   ];
