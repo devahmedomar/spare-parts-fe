@@ -15,7 +15,7 @@ export class SparePartsService {
   }
 
   getShortages(): Observable<SparePart[]> {
-    return this.http.get<SparePart[]>(`${this.api}/shortages`);
+    return this.http.get<SparePart[]>(`${this.api}?shortages=true`);
   }
 
   getById(id: string): Observable<SparePart> {
